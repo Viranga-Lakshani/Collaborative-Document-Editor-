@@ -1,0 +1,8 @@
+{
+  "name": "collab-doc-editor-root",
+  "private": true,
+  "workspaces": [
+    "server",
+    "web"
+  ]
+}

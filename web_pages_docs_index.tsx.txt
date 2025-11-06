@@ -1,0 +1,53 @@
+import Link from "next/link";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1234";
+
+type Doc = {
+  id: string;
+  title: string;
+  createdAt: string;
+};
+
+export default function Docs() {
+  const [docs, setDocs] = useState<Doc[]>([]);
+  const [title, setTitle] = useState("");
+
+  async function fetchDocs() {
+    const res = await axios.get(`${API}/api/docs`);
+    setDocs(res.data);
+  }
+
+  useEffect(() => {
+    fetchDocs();
+  }, []);
+
+  async function createDoc() {
+    const res = await axios.post(`${API}/api/docs`, { title: title || "Untitled" });
+    // In this demo we return created doc; otherwise generate id client-side
+    const doc = res.data;
+    window.location.href = `/doc/${doc.id}`;
+  }
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Your documents</h2>
+      <ul>
+        {docs.map((d) => (
+          <li key={d.id}>
+            <Link href={`/doc/${d.id}`}>{d.title || d.id}</Link>
+          </li>
+        ))}
+      </ul>
+
+      <div style={{ marginTop: 20 }}>
+        <input placeholder="New doc title" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <button onClick={createDoc} style={{ marginLeft: 8 }}>
+          Create
+        </button>
+      </div>
+    </div>
+  );
+}

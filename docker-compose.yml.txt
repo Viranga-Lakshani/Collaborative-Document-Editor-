@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  server:
+    build: ./server
+    ports:
+      - "1234:1234"   # y-websocket + HTTP
+    environment:
+      - PORT=1234
+      - JWT_SECRET=devsecret
+      - LEVELDB_PATH=/data/leveldb
+    volumes:
+      - server-data:/data
+    depends_on:
+      - web
+  web:
+    build: ./web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:1234
+      - NEXT_PUBLIC_WS_URL=ws://localhost:1234
+    depends_on:
+      - server
+
+volumes:
+  server-data:

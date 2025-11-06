@@ -1,0 +1,29 @@
+{
+  "name": "collab-doc-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "next": "13.4.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "yjs": "^13.5.0",
+    "y-websocket": "^1.4.5",
+    "y-quill": "^1.0.5",
+    "quill": "^2.0.0",
+    "axios": "^1.4.0",
+    "swr": "^2.1.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.0",
+    "@types/react": "^18.2.21",
+    "@types/node": "^20.0.0",
+    "eslint": "^8.0.0"
+  }
+}

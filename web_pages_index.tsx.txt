@@ -1,0 +1,38 @@
+import Link from "next/link";
+import axios from "axios";
+import { useState } from "react";
+import { useRouter } from "next/router";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1234";
+
+export default function Home() {
+  const [username, setUsername] = useState("");
+  const [token, setToken] = useState("");
+  const router = useRouter();
+
+  async function login() {
+    try {
+      const res = await axios.post(`${API}/api/login`, { username });
+      setToken(res.data.token);
+      // Save token in localStorage for simple demo auth
+      localStorage.setItem("token", res.data.token);
+      router.push("/docs");
+    } catch (e) {
+      alert("Login failed");
+    }
+  }
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>Collaborative Document Editor (CRDT)</h1>
+      <p>Enter a username to start (demo auth — replace with real auth for production)</p>
+      <input placeholder="Your name" value={username} onChange={(e) => setUsername(e.target.value)} />
+      <button onClick={login} style={{ marginLeft: 8 }}>
+        Login
+      </button>
+      <div style={{ marginTop: 20 }}>
+        <Link href="/docs">Or browse docs (demo)</Link>
+      </div>
+    </div>
+  );
+}

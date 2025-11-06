@@ -1,0 +1,26 @@
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
+// Dynamic import of Editor to avoid SSR issues (Quill + window)
+const Editor = dynamic(() => import("../../src/components/Editor"), { ssr: false });
+
+export default function DocPage() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  if (!id) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+        <Link href="/docs">Back to docs</Link>
+      </div>
+      <div style={{ flex: 1, display: "flex" }}>
+        <Editor docId={String(id)} />
+      </div>
+    </div>
+  );
+}
